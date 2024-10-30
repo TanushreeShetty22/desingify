@@ -16,6 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "./ui/textarea";
+import { useCabinetData } from "@/store/use-cabinet-store";
 
 const FormSchema = z.object({
   prompt: z.string().min(2, {
@@ -24,6 +25,8 @@ const FormSchema = z.object({
 });
 
 export function CabientForm() {
+  const { setCabinetData } = useCabinetData();
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -33,8 +36,22 @@ export function CabientForm() {
 
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
     try {
-      await axios.post("/api/openai", values);
-      console.log("success");
+      const response = await axios.post("/api/openai", values);
+
+      if (!response) {
+        throw new Error("Something went wrong");
+      }
+
+      const data = response.data;
+
+      setCabinetData({
+        width: data.width,
+        height: data.height,
+        depth: data.depth,
+        thickness: data.thickness,
+        materialColor: data.material,
+        shelves: data.shelves,
+      });
     } catch (error) {
       console.log("error", error);
     }
