@@ -1,8 +1,7 @@
 // prisma/schema.prisma
 datasource db {
-  provider  = "postgresql"
+  provider  = "mysql"
   url  	    = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
 
 generator client {
@@ -15,7 +14,7 @@ enum UserRole {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String    @id @default(uuid())
   name          String?
   email         String?   @unique
   emailVerified DateTime?
@@ -28,7 +27,7 @@ model User {
 }
 
 model Account {
-  id                 String  @id @default(cuid())
+  id                 String  @id @default(uuid())
   userId             String
   type               String
   provider           String
@@ -47,7 +46,7 @@ model Account {
 }
 
 model VerificationToken {
-  id String @id @default(cuid())
+  id String @id @default(uuid())
   email String
   token String @unique
   expires DateTime
@@ -56,7 +55,7 @@ model VerificationToken {
 }
 
 model PasswordResetToken {
-  id String @id @default(cuid())
+  id String @id @default(uuid())
   email String
   token String @unique
   expires DateTime
@@ -65,7 +64,7 @@ model PasswordResetToken {
 }
 
 model TwoFactorToken {
-  id String @id @default(cuid())
+  id String @id @default(uuid())
   email String
   token String @unique
   expires DateTime
@@ -74,7 +73,7 @@ model TwoFactorToken {
 }
 
 model TwoFactorConfirmation {
-  id String @id @default(cuid())
+  id String @id @default(uuid())
 
   userId String
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
