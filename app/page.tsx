@@ -28,7 +28,7 @@ export default function Home() {
     <>
       <div className="grid grid-cols-2 gap-1">
         <div className="bg-gray-300 h-full flex flex-col justify-center items-center">
-          <h1>Make a cabinet</h1>
+          <h1>Make a cabinet update</h1>
           <CabientForm />
         </div>
         <AIModalCabinet
