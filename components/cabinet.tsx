@@ -22,7 +22,6 @@ interface AIModalCabinetProps {
 }
 
 const textureURLs = {
-  // * New section: Texture URLs
   lightOak: {
     larger: "https://i.ibb.co/GxqXx2d/light-oak-larger-texture.png",
     edges: "https://i.ibb.co/jMXH2FB/light-oak-edges-texture.png",
@@ -43,34 +42,29 @@ export const AIModalCabinet = ({
   toggleResizing,
 }: AIModalCabinetProps) => {
   const mountRef = useRef<HTMLDivElement>(null);
+  const currentRenderer = useRef<THREE.WebGLRenderer | null>(null); // Track renderer
 
   const shelves = aiSettings && parseInt(aiSettings.shelves);
 
   useEffect(() => {
     if (mountRef.current) {
+      // Remove any existing renderer before creating a new one
+      if (currentRenderer.current) {
+        mountRef.current.removeChild(currentRenderer.current.domElement);
+        currentRenderer.current.dispose();
+      }
+
       // Create the scene
       const scene = new THREE.Scene();
       scene.background = new THREE.Color(0xffffff);
 
       // Set up the camera
-
-      let camera: any;
-
-      if (!isResizing) {
-        camera = new THREE.PerspectiveCamera(
-          80,
-          1, // Aspect ratio is 1 because width and height are the same
-          1,
-          2000
-        );
-      } else {
-        camera = new THREE.PerspectiveCamera(
-          80,
-          window.innerWidth / window.innerHeight,
-          1,
-          2000
-        );
-      }
+      let camera = new THREE.PerspectiveCamera(
+        80,
+        isResizing ? window.innerWidth / window.innerHeight : 1,
+        1,
+        2000
+      );
 
       camera.position.set(
         800 * Math.cos(THREE.MathUtils.degToRad(50)),
@@ -82,18 +76,18 @@ export const AIModalCabinet = ({
 
       // Create the renderer
       const renderer = new THREE.WebGLRenderer({ antialias: true });
-      {
-        !isResizing && renderer.setSize(500, 500); // Set size to 400x400 pixels
-      }
-      {
-        isResizing && renderer.setSize(window.innerWidth, window.innerHeight);
-      }
+      renderer.setSize(
+        isResizing ? window.innerWidth : 500,
+        isResizing ? window.innerHeight : 500
+      );
       renderer.shadowMap.enabled = true;
       renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      currentRenderer.current = renderer; // Save the renderer
+
+      // Append renderer to the DOM
       mountRef.current.appendChild(renderer.domElement);
 
       if (!isResizing) {
-        // Set styles for the container
         mountRef.current.style.width = "500px";
         mountRef.current.style.height = "500px";
       }
@@ -114,34 +108,32 @@ export const AIModalCabinet = ({
       const height = aiSettings && parseInt(aiSettings.height);
       const thickness = aiSettings && parseInt(aiSettings.thickness);
 
-      // Validate dimensions
       if (isNaN(width) || isNaN(depth) || isNaN(height) || isNaN(thickness)) {
         console.error("Invalid dimensions in aiSettings");
         return;
       }
 
-      // Load textures based on the selected material color * New section
+      // Load textures based on the selected material color
       const textureLoader = new THREE.TextureLoader();
       let largerTexture, edgeTexture;
 
       switch ((aiSettings && aiSettings.materialColor) || "#D3B8AE") {
-        case "#D3B8AE": // Light Oak
+        case "#D3B8AE":
           largerTexture = textureLoader.load(textureURLs.lightOak.larger);
           edgeTexture = textureLoader.load(textureURLs.lightOak.edges);
           break;
-        case "#F3D6C4": // Pine
+        case "#F3D6C4":
           largerTexture = textureLoader.load(textureURLs.pine.larger);
           edgeTexture = textureLoader.load(textureURLs.pine.edges);
           break;
-        case "#D9B68C": // Walnut
+        case "#D9B68C":
           largerTexture = textureLoader.load(textureURLs.walnut.larger);
           edgeTexture = textureLoader.load(textureURLs.walnut.edges);
           break;
         default:
-          largerTexture = edgeTexture = null; // Use default textures or color if needed
+          largerTexture = edgeTexture = null;
       }
 
-      // Create materials for larger faces and edges * New section
       const largerMaterial = new THREE.MeshStandardMaterial({
         map: largerTexture,
         roughness: 0.5,
@@ -153,11 +145,9 @@ export const AIModalCabinet = ({
         metalness: 0.2,
       });
 
-      // Add ambient light
       const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
       scene.add(ambientLight);
 
-      // Add directional light with shadows
       const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
       directionalLight.position.set(1000, 1000, 1000);
       directionalLight.castShadow = true;
@@ -165,19 +155,17 @@ export const AIModalCabinet = ({
       directionalLight.shadow.mapSize.height = 2048;
       scene.add(directionalLight);
 
-      // Initialize cabinet group
       let cabinetGroup = new THREE.Group();
 
-      // Function to create a panel with different materials for faces and edges * New section
       const createPanel = (w: number, h: number, d: number) => {
         const geometry = new THREE.BoxGeometry(w, h, d);
         const materials = [
-          largerMaterial, // Front face
-          largerMaterial, // Back face
-          edgeMaterial, // Top face
-          edgeMaterial, // Bottom face
-          edgeMaterial, // Right face
-          edgeMaterial, // Left face
+          largerMaterial,
+          largerMaterial,
+          edgeMaterial,
+          edgeMaterial,
+          edgeMaterial,
+          edgeMaterial,
         ];
         const mesh = new THREE.Mesh(geometry, materials);
         mesh.castShadow = true;
@@ -194,21 +182,13 @@ export const AIModalCabinet = ({
         return group;
       };
 
-      // Function to create a shelf
-      const createShelf = () => {
-        return createPanel(
-          width - 2 * thickness,
-          thickness,
-          depth - 2 * thickness
-        );
-      };
+      const createShelf = () =>
+        createPanel(width - 2 * thickness, thickness, depth - 2 * thickness);
 
-      // Function to update the cabinet
       const updateCabinet = () => {
         scene.remove(cabinetGroup);
         cabinetGroup = new THREE.Group();
 
-        // Create panels
         const leftPanel = createPanel(thickness, height, depth);
         const rightPanel = createPanel(thickness, height, depth);
         const topPanel = createPanel(width - 2 * thickness, thickness, depth);
@@ -223,35 +203,29 @@ export const AIModalCabinet = ({
           thickness
         );
 
-        // Set panel positions
         leftPanel.position.set(-width / 2 + thickness / 2, 0, 0);
         rightPanel.position.set(width / 2 - thickness / 2, 0, 0);
         topPanel.position.set(0, height / 2 - thickness / 2, 0);
         bottomPanel.position.set(0, -height / 2 + thickness / 2, 0);
         backPanel.position.set(0, 0, -depth / 2 + thickness / 2);
 
-        // Add panels to cabinet group
         cabinetGroup.add(leftPanel);
         cabinetGroup.add(rightPanel);
         cabinetGroup.add(topPanel);
         cabinetGroup.add(bottomPanel);
         cabinetGroup.add(backPanel);
 
-        // Add shelves to cabinet group
         for (let i = 1; i <= shelves; i++) {
           const shelf = createShelf();
           shelf.position.set(0, -height / 2 + i * (height / (shelves + 1)), 0);
           cabinetGroup.add(shelf);
         }
 
-        // Add cabinet group to scene
         scene.add(cabinetGroup);
       };
 
-      // Initial cabinet update
       updateCabinet();
 
-      // Animation loop
       const animate = () => {
         requestAnimationFrame(animate);
         controls.update();
@@ -260,18 +234,17 @@ export const AIModalCabinet = ({
 
       animate();
 
-      // Handle window resize
       window.addEventListener("resize", () => {
-        camera.aspect = 1; // Maintain aspect ratio of 1
+        camera.aspect = 1;
         camera.updateProjectionMatrix();
-        renderer.setSize(400, 400); // Set size to 400x400 pixels
+        renderer.setSize(400, 400);
       });
 
-      // Cleanup function
       return () => {
-        if (mountRef.current) {
-          // eslint-disable-next-line react-hooks/exhaustive-deps
-          mountRef.current.removeChild(renderer.domElement);
+        if (currentRenderer.current && mountRef.current) {
+          mountRef.current.removeChild(currentRenderer.current.domElement);
+          currentRenderer.current.dispose();
+          currentRenderer.current = null;
         }
       };
     }
@@ -279,7 +252,19 @@ export const AIModalCabinet = ({
 
   return (
     <>
-      <div ref={mountRef} className={cn("h-full")} />
+      {isResizing && (
+        <Button
+          onClick={toggleResizing}
+          variant="outline"
+          className="absolute z-10 right-3 top-3 h-10 w-10"
+        >
+          <Minimize className="h-4 w-4" />
+        </Button>
+      )}
+      <div
+        ref={mountRef}
+        className="relative bg-white rounded-md overflow-hidden w-full h-[400px] max-w-full"
+      ></div>
     </>
   );
 };

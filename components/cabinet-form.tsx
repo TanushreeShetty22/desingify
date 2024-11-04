@@ -1,5 +1,3 @@
-"use client";
-
 import * as z from "zod";
 import axios from "axios";
 import { useForm } from "react-hook-form";
@@ -9,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -17,6 +14,8 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "./ui/textarea";
 import { useCabinetData } from "@/store/use-cabinet-store";
+import { useState } from "react";
+import { Loader } from "lucide-react";
 
 const FormSchema = z.object({
   prompt: z.string().min(2, {
@@ -33,6 +32,8 @@ export function CabientForm() {
       prompt: "",
     },
   });
+
+  const { isSubmitting } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
     try {
@@ -59,21 +60,43 @@ export function CabientForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="w-2/3 space-y-6 mx-auto"
+      >
         <FormField
           control={form.control}
           name="prompt"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Propmt</FormLabel>
+              <FormLabel>Prompt</FormLabel>
               <FormControl>
-                <Textarea placeholder="shadcn" {...field} />
+                <Textarea
+                  placeholder="make a cabinet of..."
+                  {...field}
+                  disabled={isSubmitting}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <div className="flex justify-center space-x-4 w-full">
+          {" "}
+          {/* Center and space buttons */}
+          <Button type="submit">
+            {" "}
+            {isSubmitting ? (
+              <>
+                <Loader className="size-4 animate-spin mr-2" /> Generating{" "}
+              </>
+            ) : (
+              "Make 3d Model"
+            )}{" "}
+          </Button>
+          <Button type="button">Upload 2d image</Button>
+          <Button type="button">Get Cutlist</Button>
+        </div>
       </form>
     </Form>
   );
