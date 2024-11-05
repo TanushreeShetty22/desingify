@@ -37,7 +37,7 @@ export async function POST(req: Request) {
           role: "user",
           content: `Extract the dimensions, material, and shelves from the following description. Only provide the numbers and material, separated by commas. If any  dimension or material is not provided, use the default values: Width: 600, Depth: 500, Height: 720, Thickness: 18, Material: pine, Shelves: 2.
                     Description: "${prompt}"
-                    Format: Width, Depth, Height, Thickness, Material, Shelves`,
+                    Format: Width, Depth, Height, Thickness, Material, Shelves, totalQty `,
         },
       ],
       max_tokens: 100,
@@ -60,6 +60,7 @@ export async function POST(req: Request) {
       thickness: "18",
       material: "pine",
       shelves: "2",
+      totalQty: "1",
     };
 
     // Split the text into individual parts
@@ -89,6 +90,10 @@ export async function POST(req: Request) {
       parts.length > 5 && parts[5] && parts[5] !== "na" && parts[5] !== "n/a"
         ? parts[5]
         : defaultValues.shelves;
+    const totalQty =
+      parts.length > 6 && parts[6] && parts[6] !== "na" && parts[6] !== "n/a"
+        ? parts[6]
+        : defaultValues.totalQty;
 
     // Check if the material name exists in the material map and set its value
     if (material && materialMap.has(material.toLowerCase())) {
@@ -105,6 +110,7 @@ export async function POST(req: Request) {
       thickness,
       material,
       shelves,
+      totalQty,
     });
   } catch (error: any) {
     console.log(

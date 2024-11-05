@@ -16,6 +16,7 @@ import { Textarea } from "./ui/textarea";
 import { useCabinetData } from "@/store/use-cabinet-store";
 import { useState } from "react";
 import { Loader } from "lucide-react";
+import Link from "next/link";
 
 const FormSchema = z.object({
   prompt: z.string().min(2, {
@@ -52,6 +53,7 @@ export function CabientForm() {
         thickness: data.thickness,
         materialColor: data.material,
         shelves: data.shelves,
+        totalQty: data.totalQty,
       });
     } catch (error) {
       console.log("error", error);
@@ -69,7 +71,7 @@ export function CabientForm() {
           name="prompt"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Prompt</FormLabel>
+              <FormLabel style={{ color: "white" }}>Prompt</FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="make a cabinet of..."
@@ -94,8 +96,14 @@ export function CabientForm() {
               "Make 3d Model"
             )}{" "}
           </Button>
-          <Button type="button">Upload 2d image</Button>
-          <Button type="button">Get Cutlist</Button>
+          <Button type="button">
+            <Link href="http://localhost:8501">Upload 2d image</Link>
+          </Button>
+          <Button type="button">
+            <Link href="/cutlist" target="_blank">
+              Make Cutlist
+            </Link>
+          </Button>
         </div>
       </form>
     </Form>

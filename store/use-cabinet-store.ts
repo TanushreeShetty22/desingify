@@ -1,3 +1,5 @@
+// store/use-cabinet-store.ts
+
 import { create } from "zustand";
 
 type CabinetData = {
@@ -12,7 +14,7 @@ type CabinetData = {
   setCabinetData: (cabinet: Partial<CabinetData>) => void;
 };
 
-export const useCabinetData = create<CabinetData>((set) => ({
+const defaultCabinetData: CabinetData = {
   width: "",
   height: "",
   depth: "",
@@ -21,5 +23,28 @@ export const useCabinetData = create<CabinetData>((set) => ({
   shelves: "",
   totalQty: "",
   optimize: false,
-  setCabinetData: (cabinet) => set((state) => ({ ...state, ...cabinet })),
+  setCabinetData: () => {},
+};
+
+// Function to load initial state from localStorage in the browser
+export const loadCabinetData = (): CabinetData => {
+  if (typeof window !== "undefined") {
+    const savedData = localStorage.getItem("cabinetData");
+    return savedData ? JSON.parse(savedData) : defaultCabinetData;
+  }
+  return defaultCabinetData;
+};
+
+// Create Zustand store
+export const useCabinetData = create<CabinetData>((set) => ({
+  ...defaultCabinetData,
+  setCabinetData: (cabinet) => {
+    set((state) => {
+      const newState = { ...state, ...cabinet };
+      if (typeof window !== "undefined") {
+        localStorage.setItem("cabinetData", JSON.stringify(newState));
+      }
+      return newState;
+    });
+  },
 }));

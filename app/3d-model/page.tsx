@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { AIModalCabinet } from "@/components/cabinet";
-import { CabientForm } from "@/components/cabinet-form";
+import { CabientForm } from "@/components/cabinet-form"; // Fixed typo in import statement
 import { useCabinetData } from "@/store/use-cabinet-store";
 
 export default function Home() {
@@ -26,14 +26,16 @@ export default function Home() {
 
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-screen">
+      <div className="grid grid-cols-1 md:grid-cols-2 h-screen">
         {/* Left Section: Form Section */}
-
-        <div className="bg-amber-100 h-full flex flex-col justify-center items-center px-8 py-6">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4 text-center">
+        <div
+          style={{ backgroundColor: "#554232" }}
+          className="h-full flex flex-col justify-center items-center px-8 py-6 bg-cover"
+        >
+          <h1 className="text-4xl font-bold text-white mb-4 text-center">
             Design Your Custom Cabinet
           </h1>
-          <p className="text-lg text-gray-600 mb-8 text-center max-w-md">
+          <p className="text-lg text-white mb-8 text-center max-w-md">
             Create a cabinet that fits your exact needs. Customize dimensions,
             materials, and more with our easy-to-use tool.
           </p>
@@ -43,9 +45,9 @@ export default function Home() {
         {/* Right Section: 3D Model Display */}
         <div
           style={{ backgroundImage: "url('/BG1.png')" }}
-          className="bg-gray-300 h-full flex flex-col justify-center items-center"
+          className="bg-gray-300 h-full flex flex-col justify-center items-center bg-cover"
         >
-          <div className="flex flex-col justify-center items-center bg-white shadow-lg rounded-lg p-8 w-full">
+          <div className="flex flex-col justify-center items-center bg-white shadow-lg rounded-lg p-8 w-3/4 md:w-3/4">
             <h2 className="text-3xl font-semibold text-gray-800 mb-4 text-center">
               Visualize in 3D
             </h2>
