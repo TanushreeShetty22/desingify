@@ -45,9 +45,9 @@ export default function Home() {
         {/* Right Section: 3D Model Display */}
         <div
           style={{ backgroundImage: "url('/BG1.png')" }}
-          className="bg-gray-300 h-full flex flex-col justify-center items-center bg-cover"
+          className="bg-gray-300 h-full flex flex-col justify-center items-center bg-cover p-2"
         >
-          <div className="flex flex-col justify-center items-center bg-white shadow-lg rounded-lg p-8 w-3/4 md:w-3/4">
+          <div className="flex flex-col justify-center items-center bg-white shadow-lg rounded-lg p-5">
             <h2 className="text-3xl font-semibold text-gray-800 mb-4 text-center">
               Visualize in 3D
             </h2>

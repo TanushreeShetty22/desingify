@@ -1,5 +1,9 @@
+"use client";
+
 import * as z from "zod";
 import axios from "axios";
+import Link from "next/link";
+import { Loader } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -14,9 +18,6 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "./ui/textarea";
 import { useCabinetData } from "@/store/use-cabinet-store";
-import { useState } from "react";
-import { Loader } from "lucide-react";
-import Link from "next/link";
 
 const FormSchema = z.object({
   prompt: z.string().min(2, {
@@ -96,8 +97,11 @@ export function CabientForm() {
               "Make 3d Model"
             )}{" "}
           </Button>
-          <Button type="button">
+          <Button type="button" className="hidden md:block">
             <Link href="http://localhost:8501">Upload 2d image</Link>
+          </Button>
+          <Button type="button" className="md:hidden block">
+            <Link href="http://localhost:8501">View AR</Link>
           </Button>
           <Button type="button">
             <Link href="/cutlist" target="_blank">
