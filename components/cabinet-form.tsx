@@ -2,7 +2,6 @@ import * as z from "zod";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -14,13 +13,13 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "./ui/textarea";
 import { useCabinetData } from "@/store/use-cabinet-store";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Loader } from "lucide-react";
 import Link from "next/link";
 
 const FormSchema = z.object({
   prompt: z.string().min(2, {
-    message: "prompt must be at least 2 characters.",
+    message: "Prompt must be at least 2 characters.",
   }),
 });
 
@@ -35,6 +34,18 @@ export function CabientForm() {
   });
 
   const { isSubmitting } = form.formState;
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768); // Adjust the width threshold as needed
+    };
+
+    handleResize(); // Set the initial state
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
     try {
@@ -64,7 +75,7 @@ export function CabientForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-2/3 space-y-6 mx-auto"
+        className="w-full max-w-md space-y-6 mx-auto" // Adjusted width for responsiveness
       >
         <FormField
           control={form.control}
@@ -83,23 +94,28 @@ export function CabientForm() {
             </FormItem>
           )}
         />
-        <div className="flex justify-center space-x-4 w-full">
-          {" "}
-          {/* Center and space buttons */}
-          <Button type="submit">
-            {" "}
+        <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 w-full">
+          {/* Stack buttons on smaller screens with spacing */}
+          <Button type="submit" className="w-full sm:w-auto">
             {isSubmitting ? (
               <>
-                <Loader className="size-4 animate-spin mr-2" /> Generating{" "}
+                <Loader className="size-4 animate-spin mr-2" /> Generating
               </>
             ) : (
-              "Make 3d Model"
-            )}{" "}
+              "Make 3D Model"
+            )}
           </Button>
-          <Button type="button">
-            <Link href="http://localhost:8501">Upload 2d image</Link>
-          </Button>
-          <Button type="button">
+          {/* Conditional button rendering */}
+          {isMobile ? (
+            <Button type="button" className="w-full sm:w-auto">
+              <Link href="/ar-view">View in AR</Link>
+            </Button>
+          ) : (
+            <Button type="button" className="w-full sm:w-auto">
+              <Link href="http://localhost:8501">Upload 2D Image</Link>
+            </Button>
+          )}
+          <Button type="button" className="w-full sm:w-auto">
             <Link href="/cutlist" target="_blank">
               Make Cutlist
             </Link>
