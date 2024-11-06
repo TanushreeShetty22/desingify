@@ -3,6 +3,7 @@
 import * as z from "zod";
 import axios from "axios";
 import Link from "next/link";
+import { useState } from "react";
 import { Loader } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,9 +18,6 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "./ui/textarea";
 import { useCabinetData } from "@/store/use-cabinet-store";
-import { useState } from "react";
-import { Loader } from "lucide-react";
-import Link from "next/link";
 
 const FormSchema = z.object({
   prompt: z.string().min(2, {
@@ -38,18 +36,6 @@ export function CabientForm() {
   });
 
   const { isSubmitting } = form.formState;
-
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768); // Adjust the width threshold as needed
-    };
-
-    handleResize(); // Set the initial state
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
     try {
@@ -109,8 +95,11 @@ export function CabientForm() {
               "Make 3D Model"
             )}
           </Button>
-          <Button type="button">
+          <Button type="button" className="hidden lg:block">
             <Link href="http://localhost:8501">Upload 2d image</Link>
+          </Button>
+          <Button type="button" className="lg:hidden block">
+            <Link href="http://localhost:8501">AR View</Link>
           </Button>
           <Button type="button">
             <Link href="/cutlist" target="_blank">
