@@ -98,9 +98,7 @@ export function CabientForm() {
           <Button type="button" className="hidden lg:block">
             <Link href="http://localhost:8501">Upload 2d image</Link>
           </Button>
-          <Button type="button" className="lg:hidden block">
-            <Link href="http://localhost:8501">AR View</Link>
-          </Button>
+
           <Button type="button">
             <Link href="/cutlist" target="_blank">
               Make Cutlist
