@@ -12,6 +12,8 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { LogoutButton } from "@/components/auth/logout-button";
 import { AlignJustify } from "lucide-react";
+import Link from "next/link";
+import { IconBase } from "react-icons/lib";
 
 export const UserButton = () => {
   const user = useCurrentUser();
@@ -20,7 +22,7 @@ export const UserButton = () => {
     <>
       {user && (
         <DropdownMenu>
-          <DropdownMenuTrigger className="absolute top-2 right-2">
+          <DropdownMenuTrigger className="absolute top-2 right-2 z-20">
             <Avatar>
               <AvatarImage src={user?.image || ""} />
               <AvatarFallback className="bg-white">
@@ -35,6 +37,12 @@ export const UserButton = () => {
                 Logout
               </DropdownMenuItem>
             </LogoutButton>
+            <Link href="\aboutus">
+              <DropdownMenuItem>
+                <IconBase className="h-4 w-4 mr-2" />
+                About Us
+              </DropdownMenuItem>
+            </Link>
           </DropdownMenuContent>
         </DropdownMenu>
       )}

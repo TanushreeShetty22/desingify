@@ -8,16 +8,6 @@ const Home = () => {
         {/* Navigation Bar */}
         <nav className="absolute top-0 w-full py-4 px-6 md:px-8 flex justify-between items-center">
           <div className="text-xl md:text-2xl font-semibold">Designify</div>
-          <ul className="flex space-x-4 md:space-x-8">
-            <li>
-              <a
-                href="/aboutus"
-                className="hover:text-yellow-700 text-sm md:text-base"
-              >
-                About Us
-              </a>
-            </li>
-          </ul>
         </nav>
 
         {/* Main Content */}
