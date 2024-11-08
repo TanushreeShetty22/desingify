@@ -1,5 +1,3 @@
-"use client";
-
 import * as z from "zod";
 import axios from "axios";
 import Link from "next/link";
@@ -18,6 +16,13 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "./ui/textarea";
 import { useCabinetData } from "@/store/use-cabinet-store";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./ui/tooltip";
+import { Info } from "lucide-react"; // Import an info icon for tooltip trigger
 
 const FormSchema = z.object({
   prompt: z.string().min(2, {
@@ -25,9 +30,8 @@ const FormSchema = z.object({
   }),
 });
 
-export function CabientForm() {
+export function CabinetForm() {
   const { setCabinetData } = useCabinetData();
-
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -65,17 +69,33 @@ export function CabientForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full max-w-md space-y-6 mx-auto" // Adjusted width for responsiveness
+        className="w-full max-w-md space-y-6 mx-auto"
       >
         <FormField
           control={form.control}
           name="prompt"
           render={({ field }) => (
             <FormItem>
-              <FormLabel style={{ color: "white" }}>Prompt</FormLabel>
+              <FormLabel className="flex items-center text-white gap-2">
+                Prompt
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Info className="w-4 h-4 text-white" />
+                    </TooltipTrigger>
+                    <TooltipContent className="w-[400px]">
+                      <p>
+                        Width and Height should be between 100 and 1000. Number
+                        of Shelves should be less than 5. Available materials:
+                        Oak, Pine, and Walnut.
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="make a cabinet of..."
+                  placeholder="Eg. Make a cabinet of width 600 height 700 thickness 18 with 2 shelves and made of Pine material. "
                   {...field}
                   disabled={isSubmitting}
                 />
@@ -85,7 +105,6 @@ export function CabientForm() {
           )}
         />
         <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 w-full">
-          {/* Stack buttons on smaller screens with spacing */}
           <Button type="submit" className="w-full sm:w-auto">
             {isSubmitting ? (
               <>
@@ -95,15 +114,27 @@ export function CabientForm() {
               "Make 3D Model"
             )}
           </Button>
-          <Button type="button" className="hidden lg:block">
+
+          <Button type="button" className="hidden lg:block" asChild>
             <Link href="http://localhost:8501">Upload 2d image</Link>
           </Button>
 
-          <Button type="button">
-            <Link href="/cutlist" target="_blank">
-              Make Cutlist
-            </Link>
-          </Button>
+          {/* Tooltip for the 'Make Cutlist' button */}
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button type="button" asChild>
+                  <Link href="/cutlist" target="_blank">
+                    Make Cut-list
+                  </Link>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                A cut-list is a detailed list of material cuts required for
+                making a furniture along with the estimated cost.
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       </form>
     </Form>

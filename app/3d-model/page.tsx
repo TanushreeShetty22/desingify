@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { AIModalCabinet } from "@/components/cabinet";
-import { CabientForm } from "@/components/cabinet-form"; // Fixed typo in import statement
+import { CabinetForm } from "@/components/cabinet-form";
 import { useCabinetData } from "@/store/use-cabinet-store";
 
 export default function Home() {
@@ -39,7 +39,7 @@ export default function Home() {
             Create a cabinet that fits your exact needs. Customize dimensions,
             materials, and more with our easy-to-use tool.
           </p>
-          <CabientForm />
+          <CabinetForm />
         </div>
 
         {/* Right Section: 3D Model Display */}
