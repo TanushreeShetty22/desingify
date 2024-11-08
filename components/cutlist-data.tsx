@@ -140,73 +140,80 @@ export const CutlistData = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 md:p-6">
-      <h1 className="text-2xl md:text-3xl font-bold text-center mb-4 md:mb-6">
-        Cutlist
-      </h1>
-      <div
-        id="cutlist-table"
-        className="overflow-x-auto min-w-full bg-white border border-gray-300 rounded-lg shadow-md"
-      >
-        <table className="w-full">
-          <thead className="bg-gray-200">
-            <tr>
-              <th className="border px-2 py-1 md:px-4 md:py-2">Part</th>
-              <th className="border px-2 py-1 md:px-4 md:py-2">Width (mm)</th>
-              <th className="border px-2 py-1 md:px-4 md:py-2">Height (mm)</th>
-              <th className="border px-2 py-1 md:px-4 md:py-2">
-                Thickness (mm)
-              </th>
-              <th className="border px-2 py-1 md:px-4 md:py-2">Material</th>
-              <th className="border px-2 py-1 md:px-4 md:py-2">Quantity</th>
-            </tr>
-          </thead>
-          <tbody>
-            {panelsData.map((panel, index) => (
-              <tr key={index} className="hover:bg-gray-100">
-                <td className="border px-2 py-1 md:px-4 md:py-2">
-                  {panel.sName}
-                </td>
-                <td className="border px-2 py-1 md:px-4 md:py-2">
-                  {panel.nWidth.toFixed(2)}
-                </td>
-                <td className="border px-2 py-1 md:px-4 md:py-2">
-                  {panel.nLength.toFixed(2)}
-                </td>
-                <td className="border px-2 py-1 md:px-4 md:py-2">
-                  {numThickness}
-                </td>
-                <td className="border px-2 py-1 md:px-4 md:py-2">
-                  {panel.material}
-                </td>
-                <td className="border px-2 py-1 md:px-4 md:py-2">
-                  {panel.nQty}
-                </td>
+    <div
+      style={{ backgroundImage: "url('/BG1.png')" }}
+      className="w-full h-full"
+    >
+      <div className="container mx-auto p-4 md:p-6">
+        <h1 className="text-2xl md:text-3xl font-bold text-center mb-4 md:mb-6 text-white">
+          Cutlist
+        </h1>
+        <div
+          id="cutlist-table"
+          className="overflow-x-auto min-w-full bg-white border border-gray-300 rounded-lg shadow-md"
+        >
+          <table className="w-full">
+            <thead className="bg-gray-200">
+              <tr>
+                <th className="border px-2 py-1 md:px-4 md:py-2">Part</th>
+                <th className="border px-2 py-1 md:px-4 md:py-2">Width (mm)</th>
+                <th className="border px-2 py-1 md:px-4 md:py-2">
+                  Height (mm)
+                </th>
+                <th className="border px-2 py-1 md:px-4 md:py-2">
+                  Thickness (mm)
+                </th>
+                <th className="border px-2 py-1 md:px-4 md:py-2">Material</th>
+                <th className="border px-2 py-1 md:px-4 md:py-2">Quantity</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {panelsData.map((panel, index) => (
+                <tr key={index} className="hover:bg-gray-100">
+                  <td className="border px-2 py-1 md:px-4 md:py-2">
+                    {panel.sName}
+                  </td>
+                  <td className="border px-2 py-1 md:px-4 md:py-2">
+                    {panel.nWidth.toFixed(2)}
+                  </td>
+                  <td className="border px-2 py-1 md:px-4 md:py-2">
+                    {panel.nLength.toFixed(2)}
+                  </td>
+                  <td className="border px-2 py-1 md:px-4 md:py-2">
+                    {numThickness}
+                  </td>
+                  <td className="border px-2 py-1 md:px-4 md:py-2">
+                    {panel.material}
+                  </td>
+                  <td className="border px-2 py-1 md:px-4 md:py-2">
+                    {panel.nQty}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
-      <div className="mt-4 md:mt-6 flex flex-col md:flex-row justify-center gap-2 md:gap-4 text-center">
-        <button
-          onClick={downloadPDF}
-          className="bg-blue-500 text-white px-4 py-2 text-sm md:text-base rounded-lg hover:bg-blue-600 transition duration-300"
-        >
-          Download Cutlist PDF
-        </button>
-        <button
-          onClick={downloadCSV}
-          className="bg-green-500 text-white px-4 py-2 text-sm md:text-base rounded-lg hover:bg-green-600 transition duration-300"
-        >
-          Download Cutlist CSV
-        </button>
-        <Link
-          href="/"
-          className="bg-yellow-500 text-white px-4 py-2 text-sm md:text-base rounded-lg hover:bg-yellow-600 transition duration-300"
-        >
-          Back to Home
-        </Link>
+        <div className="mt-4 md:mt-6 flex flex-col md:flex-row justify-center gap-2 md:gap-4 text-center">
+          <button
+            onClick={downloadPDF}
+            className="bg-blue-500 text-white px-4 py-2 text-sm md:text-base rounded-lg hover:bg-blue-600 transition duration-300"
+          >
+            Download Cutlist PDF
+          </button>
+          <button
+            onClick={downloadCSV}
+            className="bg-green-500 text-white px-4 py-2 text-sm md:text-base rounded-lg hover:bg-green-600 transition duration-300"
+          >
+            Download Cutlist CSV
+          </button>
+          <Link
+            href="/"
+            className="bg-yellow-500 text-white px-4 py-2 text-sm md:text-base rounded-lg hover:bg-yellow-600 transition duration-300"
+          >
+            Back to Home
+          </Link>
+        </div>
       </div>
     </div>
   );
