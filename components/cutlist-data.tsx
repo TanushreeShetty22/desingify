@@ -15,7 +15,7 @@ const materials = [
 ];
 
 // Helper function to get material name
-const getMaterialName = (hex: string) => {
+const getMaterialName = (hex: String) => {
   const material = materials.find(
     (m) => m.value.toLowerCase() === hex.toLowerCase()
   );
@@ -42,6 +42,9 @@ export const CutlistData = () => {
       nQty: numTotalQty,
       sName: "Top",
       material: getMaterialName(materialColor),
+      estimatedCost:
+        (((numWidth - 2 * numThickness) * numDepth * numTotalQty) / 92903.04) *
+        120,
     },
     {
       nLength: numWidth - 2 * numThickness,
@@ -49,6 +52,9 @@ export const CutlistData = () => {
       nQty: numTotalQty,
       sName: "Bottom",
       material: getMaterialName(materialColor),
+      estimatedCost:
+        (((numWidth - 2 * numThickness) * numDepth * numTotalQty) / 92903.04) *
+        120,
     },
     {
       nLength: numHeight,
@@ -56,6 +62,7 @@ export const CutlistData = () => {
       nQty: numTotalQty,
       sName: "Left Side",
       material: getMaterialName(materialColor),
+      estimatedCost: ((numHeight * numDepth * numTotalQty) / 92903.04) * 120,
     },
     {
       nLength: numHeight,
@@ -63,6 +70,7 @@ export const CutlistData = () => {
       nQty: numTotalQty,
       sName: "Right Side",
       material: getMaterialName(materialColor),
+      estimatedCost: ((numHeight * numDepth * numTotalQty) / 92903.04) * 120,
     },
     {
       nLength: numHeight,
@@ -70,6 +78,7 @@ export const CutlistData = () => {
       nQty: numTotalQty,
       sName: "Back",
       material: getMaterialName(materialColor),
+      estimatedCost: ((numHeight * numWidth * numTotalQty) / 92903.04) * 120,
     },
     {
       nLength: numWidth - 2 * numThickness,
@@ -77,6 +86,10 @@ export const CutlistData = () => {
       nQty: numShelves * numTotalQty,
       sName: "Shelf",
       material: getMaterialName(materialColor),
+      estimatedCost:
+        (((numWidth - 2 * numThickness) * numDepth * numShelves * numTotalQty) /
+          92903.04) *
+        120,
     },
   ];
 
@@ -89,6 +102,7 @@ export const CutlistData = () => {
       "Thickness (mm)",
       "Material",
       "Quantity",
+      "Estimated Cost (₹)",
     ];
     const rows = panelsData.map((panel) => [
       panel.sName,
@@ -97,6 +111,7 @@ export const CutlistData = () => {
       numThickness,
       panel.material,
       panel.nQty,
+      panel.estimatedCost.toFixed(2), // New cost field
     ]);
 
     let csvContent =
@@ -159,6 +174,10 @@ export const CutlistData = () => {
               </th>
               <th className="border px-2 py-1 md:px-4 md:py-2">Material</th>
               <th className="border px-2 py-1 md:px-4 md:py-2">Quantity</th>
+              <th className="border px-2 py-1 md:px-4 md:py-2">
+                Estimated Cost (₹)
+              </th>{" "}
+              {/* New column */}
             </tr>
           </thead>
           <tbody>
@@ -182,6 +201,10 @@ export const CutlistData = () => {
                 <td className="border px-2 py-1 md:px-4 md:py-2">
                   {panel.nQty}
                 </td>
+                <td className="border px-2 py-1 md:px-4 md:py-2">
+                  {panel.estimatedCost.toFixed(2)}
+                </td>{" "}
+                {/* New cost cell */}
               </tr>
             ))}
           </tbody>
@@ -203,7 +226,9 @@ export const CutlistData = () => {
         </button>
         <Link
           href="/"
-          className="bg-yellow-500 text-white px-4 py-2 text-sm md:text-base rounded-lg hover:bg-yellow-600 transition duration-300"
+          className="bg-yellow-500 text-white px-4 py-2
+
+ text-sm md:text-base rounded-lg hover:bg-yellow-600 transition duration-300"
         >
           Back to Home
         </Link>
