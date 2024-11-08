@@ -12,7 +12,7 @@ export default function About() {
           Welcome to Designify! We are a team of passionate students committed
           to developing innovative solutions that blend technology with design.
           Our capstone project, Designify, is an AI-powered 3D design and
-          material optimization platform created in collaboration with{" "}
+          material optimization platform created in collaboration with
           <a href="https://www.pytha.com/">
             {" "}
             <strong>PYTHA Company India</strong>.
