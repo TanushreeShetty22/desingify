@@ -162,7 +162,7 @@ export const CutlistData = () => {
   return (
     <div
       style={{ backgroundImage: "url('/BG1.png')" }}
-      className="h-full w-full"
+      className="bg-gray-300 h-full flex flex-col justify-center items-center bg-cover p-2"
     >
       <div className="container mx-auto p-4 md:p-6">
         <h1 className="text-2xl md:text-3xl font-bold text-center mb-4 md:mb-6 text-white">
