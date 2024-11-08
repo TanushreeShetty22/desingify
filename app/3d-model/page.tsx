@@ -9,7 +9,7 @@ export default function Home() {
   const { width, height, depth, thickness, materialColor, shelves } =
     useCabinetData();
 
-  const [isResizing, setIsResizing] = useState(true);
+  const [isResizing, setIsResizing] = useState(false);
 
   const toggleResizing = () => {
     setIsResizing(true);

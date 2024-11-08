@@ -4,6 +4,8 @@ import { useCabinetData } from "@/store/use-cabinet-store";
 import Link from "next/link";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
+import { Button } from "./ui/button";
+import { useState } from "react";
 
 // Sample materials array
 const materials = [
@@ -26,6 +28,8 @@ export const CutlistData = () => {
   // Retrieve cabinet data
   const { width, height, depth, shelves, totalQty, materialColor, thickness } =
     useCabinetData();
+
+  const [optimize, setOptimize] = useState(false);
 
   const numWidth = parseFloat(width) || 0;
   const numHeight = parseFloat(height) || 0;
@@ -125,6 +129,7 @@ export const CutlistData = () => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    setOptimize(true);
   };
 
   // Existing PDF download function
@@ -155,83 +160,98 @@ export const CutlistData = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 md:p-6">
-      <h1 className="text-2xl md:text-3xl font-bold text-center mb-4 md:mb-6">
-        Cutlist
-      </h1>
-      <div
-        id="cutlist-table"
-        className="overflow-x-auto min-w-full bg-white border border-gray-300 rounded-lg shadow-md"
-      >
-        <table className="w-full">
-          <thead className="bg-gray-200">
-            <tr>
-              <th className="border px-2 py-1 md:px-4 md:py-2">Part</th>
-              <th className="border px-2 py-1 md:px-4 md:py-2">Width (mm)</th>
-              <th className="border px-2 py-1 md:px-4 md:py-2">Height (mm)</th>
-              <th className="border px-2 py-1 md:px-4 md:py-2">
-                Thickness (mm)
-              </th>
-              <th className="border px-2 py-1 md:px-4 md:py-2">Material</th>
-              <th className="border px-2 py-1 md:px-4 md:py-2">Quantity</th>
-              <th className="border px-2 py-1 md:px-4 md:py-2">
-                Estimated Cost (₹)
-              </th>{" "}
-              {/* New column */}
-            </tr>
-          </thead>
-          <tbody>
-            {panelsData.map((panel, index) => (
-              <tr key={index} className="hover:bg-gray-100">
-                <td className="border px-2 py-1 md:px-4 md:py-2">
-                  {panel.sName}
-                </td>
-                <td className="border px-2 py-1 md:px-4 md:py-2">
-                  {panel.nWidth.toFixed(2)}
-                </td>
-                <td className="border px-2 py-1 md:px-4 md:py-2">
-                  {panel.nLength.toFixed(2)}
-                </td>
-                <td className="border px-2 py-1 md:px-4 md:py-2">
-                  {numThickness}
-                </td>
-                <td className="border px-2 py-1 md:px-4 md:py-2">
-                  {panel.material}
-                </td>
-                <td className="border px-2 py-1 md:px-4 md:py-2">
-                  {panel.nQty}
-                </td>
-                <td className="border px-2 py-1 md:px-4 md:py-2">
-                  {panel.estimatedCost.toFixed(2)}
-                </td>{" "}
-                {/* New cost cell */}
+    <div
+      style={{ backgroundImage: "url('/BG1.png')" }}
+      className="h-full w-full"
+    >
+      <div className="container mx-auto p-4 md:p-6">
+        <h1 className="text-2xl md:text-3xl font-bold text-center mb-4 md:mb-6 text-white">
+          Cutlist
+        </h1>
+        <div
+          id="cutlist-table"
+          className="overflow-x-auto min-w-full bg-white border border-gray-300 rounded-lg shadow-md"
+        >
+          <table className="w-full">
+            <thead className="bg-gray-200">
+              <tr>
+                <th className="border px-2 py-1 md:px-4 md:py-2">Part</th>
+                <th className="border px-2 py-1 md:px-4 md:py-2">Width (mm)</th>
+                <th className="border px-2 py-1 md:px-4 md:py-2">
+                  Height (mm)
+                </th>
+                <th className="border px-2 py-1 md:px-4 md:py-2">
+                  Thickness (mm)
+                </th>
+                <th className="border px-2 py-1 md:px-4 md:py-2">Material</th>
+                <th className="border px-2 py-1 md:px-4 md:py-2">Quantity</th>
+                <th className="border px-2 py-1 md:px-4 md:py-2">
+                  Estimated Cost (₹)
+                </th>{" "}
+                {/* New column */}
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {panelsData.map((panel, index) => (
+                <tr key={index} className="hover:bg-gray-100">
+                  <td className="border px-2 py-1 md:px-4 md:py-2">
+                    {panel.sName}
+                  </td>
+                  <td className="border px-2 py-1 md:px-4 md:py-2">
+                    {panel.nWidth.toFixed(2)}
+                  </td>
+                  <td className="border px-2 py-1 md:px-4 md:py-2">
+                    {panel.nLength.toFixed(2)}
+                  </td>
+                  <td className="border px-2 py-1 md:px-4 md:py-2">
+                    {numThickness}
+                  </td>
+                  <td className="border px-2 py-1 md:px-4 md:py-2">
+                    {panel.material}
+                  </td>
+                  <td className="border px-2 py-1 md:px-4 md:py-2">
+                    {panel.nQty}
+                  </td>
+                  <td className="border px-2 py-1 md:px-4 md:py-2">
+                    {panel.estimatedCost.toFixed(2)}
+                  </td>{" "}
+                  {/* New cost cell */}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
-      <div className="mt-4 md:mt-6 flex flex-col md:flex-row justify-center gap-2 md:gap-4 text-center">
-        <button
-          onClick={downloadPDF}
-          className="bg-blue-500 text-white px-4 py-2 text-sm md:text-base rounded-lg hover:bg-blue-600 transition duration-300"
-        >
-          Download Cutlist PDF
-        </button>
-        <button
-          onClick={downloadCSV}
-          className="bg-green-500 text-white px-4 py-2 text-sm md:text-base rounded-lg hover:bg-green-600 transition duration-300"
-        >
-          Download Cutlist CSV
-        </button>
-        <Link
-          href="/"
-          className="bg-yellow-500 text-white px-4 py-2
+        <div className="mt-4 md:mt-6 flex flex-col md:flex-row justify-center gap-2 md:gap-4 text-center">
+          <button
+            onClick={downloadPDF}
+            className="bg-blue-500 text-white px-4 py-2 text-sm md:text-base rounded-lg hover:bg-blue-600 transition duration-300"
+          >
+            Download Cutlist PDF
+          </button>
+          <button
+            onClick={downloadCSV}
+            className="bg-green-500 text-white px-4 py-2 text-sm md:text-base rounded-lg hover:bg-green-600 transition duration-300"
+          >
+            Download Cutlist CSV
+          </button>
+          {optimize && (
+            <Link href="https://cutnc.com" target="_blank">
+              <Button className="bg-green-500 text-white px-4 py-2 text-sm md:text-base rounded-lg hover:bg-green-600 transition duration-300">
+                Optimized Cutlist
+              </Button>
+            </Link>
+          )}
+
+          <Link
+            href="/"
+            className="bg-yellow-500 text-white px-4 py-2
 
  text-sm md:text-base rounded-lg hover:bg-yellow-600 transition duration-300"
-        >
-          Back to Home
-        </Link>
+          >
+            Back to Home
+          </Link>
+        </div>
       </div>
     </div>
   );
