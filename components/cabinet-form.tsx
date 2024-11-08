@@ -115,9 +115,18 @@ export function CabinetForm() {
             )}
           </Button>
 
-          <Button type="button" className="hidden lg:block" asChild>
-            <Link href="http://localhost:8501">Upload 2d image</Link>
-          </Button>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button type="button" className="hidden lg:block" asChild>
+                  <Link href="http://localhost:8501">Upload 2d image</Link>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                Upload a 2D Image to convert it into 3D file.
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
 
           {/* Tooltip for the 'Make Cutlist' button */}
           <TooltipProvider>
