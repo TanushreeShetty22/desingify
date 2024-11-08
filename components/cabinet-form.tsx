@@ -122,7 +122,7 @@ export function CabinetForm() {
                   <Link href="http://localhost:8501">Upload 2d image</Link>
                 </Button>
               </TooltipTrigger>
-              <TooltipContent>
+              <TooltipContent className="w-[400px]">
                 Upload a 2D Image to convert it into 3D file.
               </TooltipContent>
             </Tooltip>
@@ -138,7 +138,7 @@ export function CabinetForm() {
                   </Link>
                 </Button>
               </TooltipTrigger>
-              <TooltipContent>
+              <TooltipContent className="w-[400px]">
                 A cut-list is a detailed list of material cuts required for
                 making a furniture along with the estimated cost.
               </TooltipContent>
