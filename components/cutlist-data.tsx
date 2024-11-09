@@ -238,7 +238,7 @@ export const CutlistData = () => {
           {optimize && (
             <Link href="https://cutnc.com" target="_blank">
               <Button className="bg-green-500 text-white px-4 py-2 text-sm md:text-base rounded-lg hover:bg-green-600 transition duration-300">
-                Optimized Cutlist
+                Import Csv To Advanced Cutlist
               </Button>
             </Link>
           )}
